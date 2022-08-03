@@ -1,0 +1,15 @@
+getNeighbors() - funcao que retorna um array contendo todos os possiveis vizinhos de um nó
+safeNeighborhood() return se determinado array de vizinho eh seguro utilizando o reduce
+openField() - abre compo de forma recursiva
+	- se o campo nao esta aberto, deverar se aberto
+		- se o campo tem mina, devera explodir
+		- se a vizinhaca eh segura, deverar para cada vizinho, abrir os campos de maneira recursiva
+		- se a vizinha nao eh segura, entao deverar contar qunatas minas tem ao redor usando o filter
+fields - funcao que retorna um array contendo todos os objetos (mais facil de trabalhar com array 1d, do que 2d)
+hadExplosion - fara a verificao em cima de fields para saber se algum campo foi explodido (retorna boolean)
+pedding - recebe o obj field e verifica se o campo nao tem bomba e esta fechado ou se o campo tem bomba e n foi marcado com 
+flag
+wonGame - faz a verificacao no board usando um filter e a funcao pedding. se o tamanho do array resultante do filter for === 0
+entao o usario ganhou
+showMines - apos acabar o jogo, todas as minas serao mostradas. entao um filtro sera usado em cima de fields resultando em um
+array contendo todos os campos que possuem minas. depois disso, um forEach eh realizado afim de alterar esses campos para aberto

@@ -13,10 +13,14 @@ import Display from './src/componentes/Display'
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
+        backgroundColor: "rgba(0,0,0,0.8)",
     },
     button:{
         flexDirection: "row",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
+        // backgroundColor: "rgba(0,0,0,0.8)",
+        padding: 10,
+        justifyContent: "space-between",
     }
 })
 
@@ -48,12 +52,22 @@ export default class App extends React.Component {
     } 
 
     removeDigit = () => {
-        const displayValue = this.state.displayValue.slice(0, -1)
+        let displayValue = this.state.displayValue.slice(0, -1)
         const lastOperation = parseFloat(this.state.displayValue.slice(-1).trim())
         let operation = this.state.operation
         let currentOperand = this.state.currentOperand
         isNaN(lastOperation) ? operation = null : currentOperand = ''
+        displayValue === '' ? displayValue = '0' : displayValue
         this.setState({ displayValue, currentOperand, operation, displayResult: '' })
+    }
+
+    convertOperation (displayValue) {
+        //swtich the operations to the ritgh one
+        
+        if (displayValue.includes('x')) displayValue = displayValue.replace('x', '*')
+        if (displayValue.includes('÷')) displayValue = displayValue.replace('÷', '/')
+   
+        return displayValue
     }
 
 
@@ -66,20 +80,9 @@ export default class App extends React.Component {
         if (isNaN(lastInput)) return
 
         // concate the display valye with operation
-        let displayValue = this.state.displayValue + `${operation}`
-
-        //swtich the operations to the ritgh one
-        if (operation === 'x') {
-            operation = '*'
-            displayValue = displayValue.replace('x', '*')
-        }
-        
-        if (operation === '÷') {
-            operation = '/'
-            displayValue = displayValue.replace('÷', '/')
-        }
-
-        this.setState({ displayValue })
+        let displayValue = this.state.displayValue
+        operation === '=' ? displayValue : displayValue += `${operation}`
+        this.setState({ displayValue })        
 
         if (operation === '=') {
             this.finalCalculate()
@@ -106,20 +109,20 @@ export default class App extends React.Component {
     calculateShowCase = () => {
         if ((this.state.currentOperand === '' || this.state.previousOperand === '') || this.state.operation === null) return
         // let previousOperand = this.state.previousOperand
-        let result = 0
+        let result = this.convertOperation(this.state.displayValue)
         // result = eval(`${this.state.previousOperand} ${this.state.operation} ${this.state.currentOperand}`)
         // console.log(this.state.displayValue)
-        result = eval(this.state.displayValue)
+        result = eval(result)
         this.setState({ displayResult: result})
     }
 
     // calculte the operation in queue, updating the result display and set the result to previousNumber, allowing the user to continue 
     // the calculation process 
     calculate = (operation) => {
-        let result = 0
+        let result = this.convertOperation(this.state.displayValue)
         // result = eval(`${this.state.previousOperand} ${this.state.operation} ${this.state.currentOperand}`)
         // console.log(this.state.displayValue)
-        result = eval(this.state.displayValue)
+        result = eval(result)
         const previousOperand = result //update the value allowing to continue the calculation, although dont change the display value
         const currentOperand = ''
         // updates the operation to the last entered
@@ -129,12 +132,12 @@ export default class App extends React.Component {
 
     // do the calculation and shows the result
     finalCalculate = () => {
-        if ((this.state.currentOperand === '' || this.state.previousOperand === '') || this.state.operation === null) return
+        if (this.state.currentOperand === '' || this.state.previousOperand === '' || this.state.operation === null) return
 
-        let result = 0
+        let result = this.convertOperation(this.state.displayValue)
         // result = eval(`${this.state.previousOperand} ${this.state.operation} ${this.state.currentOperand}`)
         //console.log(this.state.displayValue)
-        result = eval(this.state.displayValue)
+        result = eval(result)
         const previousOperand = ''
         const currentOperand = result // shows the result and lets the user to add new values or do others operations
         this.setState({ previousOperand, currentOperand, operation: null, displayResult: '', displayValue: result})
@@ -148,7 +151,7 @@ export default class App extends React.Component {
                 <View style={styles.button}>
                     <Button label='AC' double onClick={this.clearDisplay}/>
                     {/* <Button label='()'/> */}
-                    <Button label='%' operation />
+                    <Button label='%' operation otherstyle={{backgroundColor: '#9E9E9E'}}/>
                     <Button label='÷' operation onClick={this.setOperation}/>
                     <Button label='7' onClick={this.addDigit}/>
                     <Button label='8' onClick={this.addDigit}/>

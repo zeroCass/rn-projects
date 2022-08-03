@@ -3,33 +3,42 @@ import {
     Text,
     TouchableHighlight,
     StyleSheet,
-    Dimensions
+    Dimensions,
 } from 'react-native'
 
 
 const styles = StyleSheet.create({
     button: {
         fontSize: 40,
-        height: Dimensions.get('window').width / 4,
-        width: Dimensions.get('window').width / 4,
-        padding: 20,
-        backgroundColor: "#f0f0f0",
-        borderColor: "#888",
+        height: (Dimensions.get('window').width / 5),
+        width: (Dimensions.get('window').width / 5),
+        borderRadius: (Dimensions.get('window').width / 5) / 2.2,
+        padding: 15,
+        backgroundColor: "#616161",
+        // borderColor: "rgba(0,0,0,0.8)",
         textAlign: "center",
-        borderWidth: 1
+        // borderWidth: 0,
+        marginTop: 10,
+        transform: [{scaleX: 1.1}],
+        color: '#fff'
     },
     buttonDouble: {
-        width: (Dimensions.get('window').width / 4) * 2
+        width: (Dimensions.get('window').width / 5) * 2,
+        borderRadius: ((Dimensions.get('window').width / 5) * 2) / 2.2,
+        marginLeft: 10,
+        backgroundColor: '#9E9E9E',
     },
     buttonTriple: {
-        width: (Dimensions.get('window').width / 4) * 3
+        width: (Dimensions.get('window').width / 5) * 3,
+        borderRadius: ((Dimensions.get('window').width / 5) * 3) / 2.2,
     },
     buttonOperation: { 
         backgroundColor: "#fa8231",
         color: "#fff"
     },
     buttonDel: {
-        fontSize: 30
+        fontSize: 20,
+        paddingTop: 25
     }
 
 
@@ -41,10 +50,11 @@ export default props => {
     if (props.triple) buttonStyles.push(styles.buttonTriple)
     if (props.operation) buttonStyles.push(styles.buttonOperation)
     if (props.del) buttonStyles.push(styles.buttonDel)
+    if (props.otherstyle) buttonStyles.push(props.otherstyle)
 
 
     return (
-    <TouchableHighlight onPress={() => props.onClick(props.label)}>
+    <TouchableHighlight onPress={() => props.onClick(props.label)} underlayColor={'transparent'}>
         <Text style={buttonStyles}>{props.label}</Text>
     </TouchableHighlight>
     )
