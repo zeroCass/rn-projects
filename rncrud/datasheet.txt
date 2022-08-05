@@ -1,0 +1,34 @@
+views -> userForms e UserList
+App -> stack nvigation / tela userList e tela userForm
+
+
+screenOptions -> headerStyle, headerTintColor, headerTitleStyles
+screen otions -> headerRight (retornar botao de react elements com icon add)
+
+data -> users.js: exporart arrya de 4 objs contendo id, nome, email e avatarurl
+
+userList -> adicionar flatList e a data será o users.js
+funcao getUserItem(item) que retorna um element ListItem contendo o info do usuario e onPress function
+renderItem chamando funcao
+
+em listItem adiconar rightElement que recene uma funcao getActions
+getActions recebe o user como param e passar ele como obj de route para a tela userForm atraves de navigation.navigate()
+alem disso retorna um elemet contendo o botao para alterar o usuario e outro para deletar
+no botao delete, chamar funcao cofirmUserDelection, na qual chama um alert confirmando se o usuario deseja deletar 
+se sim, chama alguma funcao que nao foi implementada ainda
+
+em UserForm
+utilizar o useStat para alterar o user recebido em props.route.params
+
+
+em UserForm
+Criar uma View contendo os text e textinput para nome, email e url e tbm um botao 
+o valor dve estar associado ao user.name
+e onChangeText deve ser setado atraves de uma funcao passada: 
+	essa funcao passa como parametro o texto e entao deve ser chamado o setUser contendo um objeto com todos os valores
+	de user e o atributo name deve ser reescrito com o paramtro name recebido
+o botao criado por em quanto deve apenas retornar para pagina anterior usando o navigation.goBack()
+um style deve ser criado:
+	form: contendo apenas um padding que vai na view
+	input: alguns estilos de borda, tamanho e margens
+
