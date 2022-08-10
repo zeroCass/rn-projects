@@ -1,0 +1,259 @@
+criar componente Task
+recebe em props:
+	desc (descricao da task)
+	estimateAt (previsao de conclusao) - por emq uanto tera fomrato de string
+	doneAt (concluido em) - por em quanto tera formato de string
+instaciar componente Task na view no arquivo TaskList
+
+---
+
+criar styles em Task
+container: flexdirection row
+	   borderColoir: 'AAA'
+           borderBottomWidth: 1
+	   alignItems: center
+           peddingVertical: 10
+
+---
+
+em Task, importart commonStyles
+importar Icon from 'react-native-vector-icons/FontAwesome'
+criar duas views dentro do container
+uma dela sera responsável por exibirt o icone de check e outra ira conter as info da task
+criar funcao getCheckView que retorna uma View se o param doneAt for diferente de null
+quando done = true, retorna view contendo um componente Icon name='check' size=20, color: '#fff'
+
+styles:
+	checkContainer: width: '20%', alignItems, justifyContent: 'center'
+	pedding: height, with: 25, borderRadius: 13, borderWidth: 1, borderColor: '#555'
+	done: height, with: 25, borderRadius: 13, backgroundColor: '#4d703', alignItems, justifyContent: 'center'
+---
+
+em commonStyles: mainText: '#222'
+ainda em Task
+styles:
+	desc: fontFamily, color: mainText, fontSize: 15
+aplicar estilo desc no texto contendo a descricao da task
+criar variael doneOrNotStyle que recebe textDecorationLine: 'line-through' se doneAt for diferente de null,
+caso contrario recebe objeto vazio
+passar esse objeto para o array de style no texto da descricao
+
+---
+
+commonStyles: subText: '#555'
+em Task
+styles:
+	date: fontFamily, color: subText, fontSize: 12
+criar varivel date que recebera doneAt, caso esteja settado ou estimateAt
+criar varivel formattedDate que ira formatar a varivel date
+exibir varivel date no Text da date
+
+---
+
+em TaskList
+importart FlatList
+criar obj state contente arrays de tasks
+esse array tera: id (random), desc, estimateAt(date), donteAt(date)
+componente FlatList:
+	data={array de task}
+	keyExtractor{item.id}
+	renderItem{({item}) => <Task {...item} />}
+
+---
+
+criar funcao toggleTask em TaskList
+	recebe o taskId atraves de uma comunicao indireta em Task
+	fazer uma copia do array de tasks
+	percorrer esse array e verificar se o id é igual ao recebido como param
+		se for, verificar se doneAt está settado, se sim recebe null, se nao recebe new Date()
+	atualizar o estado (setState)
+passar a funcao toggleTask para Task na FlatList que sera chamada no componente FIlho
+em Task, envolver a View que contem o checkList com um botao sem feedback, que no evento onPress invocara a funcao
+recebida em props.toggleTask
+
+---
+
+em TaskList, importart TouchableOpactity, Platafor,
+import Icon from 'react-native-vector-icons/FontAwesome'
+em state, criar chave showDoneTasks> true
+criar funcao toggleFilter que inverte showDoneTasks
+em ImageBackground: criar view(iconBar) que ira conter o botao e o icon name='eye-slash' ou 'eye' (que ira alternar caso
+a showDoneTasks for true or false)
+
+styles:
+	iconBar: flexDirecton: 'row', marginHorizontal: 20, JustfyContent: 'flex-end', 
+		 marginTop: Plataform.OS === 'ios' ? 40 : 10
+
+---
+
+em TaskList, criar array visibleTasks em state e alterar o data da flatList
+criar funcao filterTasks:
+	se showDoneTasks == true, entao visibleTasks sera um clone de state.tasks
+	se showDoneTasks == false:
+		criar um filtro em que retorna um array contendo apenas tasks que doneAt == null
+	atualizar o estado da visibleTasks
+na funcao componentDidMount chamar o filterTasks
+na funcao toggleFilter, passar o filterTasks como callback para o setState
+na funcao toggleTask, passar o filterTaks como callback para o setState
+
+---
+criar nova tela: addTask
+importar modal e touchablewithoutfeedback
+esse componente retorna um modal
+	modal: tem o botao e uma view (background)
+	botao: onPress={props.onCancel}
+	modal: transparent{true} e visible={props.isVisible} onRquestClose={props.onCancel}
+		animationType={}
+styles:
+	background: flex: 1, backgroundColor: 'rgba(0,0,0,0.7)'
+
+em TaskList, importart AddTask
+state tem chave showAddTask que ira controlar se o modal esta visivel ou nao
+dentro da view principal, isntaciar addTask
+passar um funcao que altera showAddTask para addTask como onCancel
+
+---
+
+em addTask,
+adiconar uma view(container) no meio dos botoes
+
+styles:
+	container: flex: 2, background: '#FFF'
+	header: fontFamily: comoonStyles.fontFamily, backgroundColor: commonStyles.today('#b13b44' - add em coomStyles)
+		color: commonStyles.secondary, textAlign: 'center', padding: 15, fontSize: 15
+
+---
+
+em addTesk, importart touchble opactity e TextInput
+dentro da view containter, adicionar textInput e outra view que contem dois botoes opactity
+	botoes: salvar e cancelar
+
+styles:
+	input: fontFamily, , height: 40, margin:15, backgroudColor: '#FFF',
+		borderWidth: 1, borderColor: '#E3E3E3', borderRadius: 6
+	buttons: flexDirection: 'row', justifyContent: 'flex-end'
+	button: margin: 20, marginRight: 30, color: today	
+	tirar flex: 1 do container
+
+criar state contendo desc
+initialState iniciara deac como ''
+textInput:
+	placeholder='infome a descricao'
+	value=desc
+	onChangeText={desc => setState}
+no botao cancel, onPress={props.onCancel}
+
+---
+
+em TaskList
+na view principal adicionar toubleopactity(addButton) contendo um icon name='plus'
+toubleopactiy:
+	activeOpacty={0.7}
+	onPress={setState({ showAddTasks: true })}
+styles:
+	addButton: position: 'absolute', rigth: 30, bottom: 30, width, height: 50
+	       	   borderRadius: 25, backgroundColor: today, justifyContent, alignItems: 'center'
+---
+
+
+em addTasks
+adicionar em initialState o date: new Date()
+importart DateTimePicker from '@react-native-community/datetimepicker'
+implementar funcao getDateTimePicker que retorna o componente DateTimePicker
+	value={date}
+	onChange{(event, date) => setState{date, showDateTimePicker: false}}
+	mode='date'
+
+chamar funcao logo apos o TextInput
+
+---
+
+em addTask
+em state, adicionar showDatePicker: false
+e na funcao getDateTimePicker verifificar se Plataform.OS === 'android'
+	retornar um compenente que contem
+		view e um touchbleocipty dentro
+			dentro de touchble tera um texto contendo dateString (uma varivel que contem a data atual formatada)
+			aplicar nesse texto o estilo date
+styles:
+	date: fontFamily, fontSize: 20, marginLeft: 15,
+	
+
+---
+
+em addTask
+implementar funcao save()
+	criar novo obj newTask { desc, date }
+	chamar funcao props.onSave recebida em props passando o obj criado
+	fazer uma verificao se onSave == true
+	resetar o estado de addTask (setSate(initial state))
+no botao salvar, passar a referencia save
+
+em TaskList
+adicionar funcao addTask que recebe newTask recebida pelo addTask
+	verificar se task.desc esta settado e nao é string vazia, (trim) ai continua (se nao gera um alert e return):
+		criar um clone do array de tasks existente
+		da um push na nova task contendo suas info e o id random (doneAt: null)
+	atualizar o array de taks, fehcar o modal (showAddTask) e chamar funcao para mostrar funcoes visiveis (filterTasks)
+
+---
+
+em Task,
+importart touchbleopacity 
+importar Swipeable from 'react-native-gesture-handler/Swipeable'
+envolver a view principal com o Swipeable
+	renderRightActions={getRightContent}
+	renderLeftActions={getLeftContent}
+na funcao getRightContent()
+	retornar um touchbleocity contendo um icon name='trash'
+	styles.right
+
+styles:
+	right: backgroundColor: 'red', flexDireciton: 'row', alignItems: 'center', JustifyCOnent: 'flex-end'
+		paddingHorizontal: 20
+
+---
+
+assistir aula: problema Swipe
+
+---
+
+
+em Task
+implementar getLeftContent
+	retornar um touchbleocity contendo um icon name='trash' styles.excludeIcon
+	styles.left
+	adicionar um text excliur com style.excludeText
+
+styles:
+	left: backgroundColor: 'red', flexDireciton: 'row', alignItems: 'center', flex: 1
+	excludeText: fontFamily, color: '#FFF', fontSize: 20, margin: 10
+	excludeIcon: marginLeft: 10
+---
+
+em Task
+na funcao getRIghtContent, no touchable onPress chamar funcao recebida via props.onDelete(props.id)
+no Swipeable, adiocionar propriedade onSwipeableLeftOpen, na qual chama a funcao via props.onDelete(props.id)
+
+em TaskList
+implementar funcao deleteTask, que recebe o id da task
+	clonar array de taks usanod um filtro na qual o array resultando nao contem a task com id
+	salvar o estado com o novo array e chamar filterTask como callback
+
+no FlatList, passar referencia da funcao deleteTask via onDelete
+
+
+---
+* persistencia dos dados
+em TaskList
+importar AsyncStorage from '@react-native-community/async-storage'
+na funcao filterTask chamar:
+	AsyncSorage.setItme('tasksState', JSON.stringify(state))
+na funcao comopnentDidMount alterar pra ser funcao async
+	stateString = await AsyncSorage.getItme('tasksState')
+	JSON.parse(stateString)
+	
+
+
+
+!!! showDoneTasks state not saving

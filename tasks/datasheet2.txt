@@ -1,0 +1,123 @@
+criar screen Auth
+	retorna um componente que tem como pricipal um imagebackGround(login.jpg)
+		dentro desse imagebackground tem:
+			Tasks (main title)
+styles:
+	background: flex: 1, width: 100%, alignItems, Justifycontent: 'center'
+	title: fontfamily, color: secondary, fontsize: 70, margimbOttom: 10
+em index.js, chamar AUth ao inves de TaskList
+
+------------------------------------------------------------------------------------
+
+em screen Auth
+criar estado para email e password
+criar uma View(formContainer) dentro de imagebackground
+	vai ter um textinput(input) do email e o outro para passwod
+	vai ter tambem um toucable que dentro tera uma view (nessa view vai ter o text do botao)
+styles:
+	formContainer: backgroundcolor: '#rgba(0,0,0,0.8)', padding: 20, width 90%
+	input: marginTop: 10, backgroundcolor: '#fff', padding: platafor == ios ? 15 : 10
+	button: backgroundcolor: '#080', padding: 10, alignItems: 'center'
+	butonText: fontFamily, color: '#fff', fontsize: 20
+------------------------------------------------------------------------------------
+em screen Auth
+criar mais 3 estados:
+	name, confirmPassword e stageNew(define se esta na tela de cadastro ou nao)
+adicionar ao campo da senha o param secureTextEntry={true}
+no comeco da view, fazer uma renderização condional:
+	se stageNew == true, rederizar o textInput name
+	e renderizar apos a senha, outro textInput para confirmar a senha
+interpolar o texto do botao:
+	se stageNew == true ? registar : entrar
+criar subtitulo  (text logo apos a view, com style.subtitle)
+	Crie sua conta ou Informe seus dados
+
+styles:
+	subtitile: fontFamilu, color: '#fff', fontSize: 20, textAling: 'center', marginBootom: 10
+------------------------------------------------------------------------------------
+
+em Auth
+importar alert
+criar funcao signinOrSignup (sem corpo por em quanto)
+fora view, criar um touchble que ira conter uma interpolacao:
+	Ainda nao possui conta ? : Ja possui conta
+no onPress, simplesmente alterar o estado de stageNew 
+
+------------------------------------------------------------------------------------
+criar dentro de src o arquivo Navigator.js
+atualizar o navigator e utilzar a forma conhecida para criar o navigator com as duas screens
+
+
+------------------------------------------------------------------------------------
+criar component AuthInput
+(esse componente tem o intuito de substituir todos os textINput da tela Auth)
+
+Entao ele tera um view, que conterá um icon e um textInput
+	a view tera o styles container e props.style
+	o icon tera o name que vira de props.icon, size=20, styles.icon
+	o texto input recebera tudo que vier de props {...props} e styles.input
+		(isso se deve ao fato de que no Auth, os textInput tem varias propriedades, que
+serao passadas em props para o AuthInput e entao se aplicarao ao textInput dentro de AuthInput)
+
+styles:
+	container: width: 100%, height:40, backgroundcolor: '#eee', borderRadius: 20, flexDirection: 'row'
+			alignItems: 'center'
+	icon: color: '#333', marginLeft: 20,
+	input: width: 70%, marginLeftr: 20,
+
+em Auth, importart AuthInput e substituir todos os textInput:
+	nome: icon=user,
+	senha: icon=lock
+	email: icon=at
+	confirmar senha: icon=asterisk
+	
+retomver em Auth:
+	padding redenreizado pelo Plataform
+
+------------------------------------------------------------------------------------
+visualizar aula E0-mail Case Insensitive
+
+------------------------------------------------------------------------------------
+criar em src o arquivo common.js
+	ele tera uma constante server que sera uma interpolação:
+		se ios = 'http://localhost:3000' se nao = http://10.0.2.2:3000
+	criar funcao showError
+		recebe err como param
+		chama um alert para mostrar a msg de erro
+	criar funcao showSucess
+		recebe msg como param
+		chama um alert com sucesos e a msg
+exportart server, showError e showSucess
+
+em Auth:
+importart server, showERROR e ShowSucess
+imoprt axios
+
+criar funcao async signup
+	essa funcao fara um axios.post nos dados que estao armazenado em estado
+	verificar try/catch
+	alternar a tela stageNew e resetar todos os estados para inicias
+na ufncao signinOrSignup chamar funcao signup de acordo com o stageNew
+------------------------------------------------------------------------------------
+em Auth
+na funcao signinORSignup chamar funcao signin
+ciar a funcao async signin
+	try/catch
+	fazer um await no post do axios, passando o emil e senha como obj
+	esse awaiut sera uma resposta que contera o token de autorizacao
+	entao, chamar:
+		axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`
+	navegar para a tela principal do aplicativo
+------------------------------------------------------------------------------------
+em Auth
+criar array validations e fazer um push em algumas validacoes:
+	verfiicar se o email esta settado e tem o '@'
+	senha ta settada e é maior que 4 digitos
+	se estiver na tela de cadastro:
+		o nome tem que estar settado e ser maior q 3 chars
+		a senha tem que ser igual a confirme senha
+	armazenar na constante validForm o reduce do array validation
+no botao de entrar/registrar adicionar propriedade disable={validForm}
+adicionar um estilo ao botao, caso validForm = false, cinza='#AAA'
+
+------------------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+-Explicar/Entender contextAPi (qual seus usos)
+	contexts facilitam o compartilhamento de dados entre componentes
+	sem que esses precisem se preocupar em receber propriedades de maneira indireita/direta
+	Dessa forma, todos os componentes envolvidos em um contexto acessam os dados de maneira global.
+
+Explicar/Entender Hooks
+
+
+Explicar/Entender Redux (qual o seu uso)
+	Redux é um gerenciador de estado
+	Quando muitos componentes precisam de um estado especifico, é mais util ter um
+	estado CENTRALIZADO, na qual quando este for alterado, todos os componentes associados
+	assim como a UI serão atualizadas. 
+	Assim como o contextAPi, o gerenciador de estados facilita a comunicação entre componentes distantes
+	na árvore de componentes	
+
+Explicar/Entender Reduce (semelhanças e diferenças entre redux)

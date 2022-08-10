@@ -1,14 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { View, FlatList, Alert } from 'react-native'
 import { ListItem, Avatar, Button, Icon } from '@rneui/base'
-import users from '../data/users'
+import UserContext from '../context/UserContext'
+
+
 
 export default props => {
+    const { state, dispatch } = useContext(UserContext)
+    const users = state.users
 
     const confirmUserAlter = (user) => {
         Alert.alert('Delete user', 'Do you want to delete this user ?', [
             { text: 'Cancel' },
-            { text: 'OK', onPress: () => console.log(`Delete user[${user.id}]: ${user.name}`)} 
+            { text: 'OK', 
+                onPress: () => {
+                    dispatch({
+                        type: 'deleteUser',
+                        payload: user
+                    })
+                }
+            } 
         ])
     }
 

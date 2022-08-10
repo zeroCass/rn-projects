@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native'
+import UserContext from '../context/UserContext'
 
 export default ({ route, navigation }) => {
+    
+    const { state, dispatch } = useContext(UserContext)
     const [user, setUser] = useState(route.params ? route.params : {})
+
     return (
         <View style={styles.form}>
             <Text>Nome</Text>
@@ -28,7 +32,13 @@ export default ({ route, navigation }) => {
             />
             <Button
                 title='Salvar'
-                onPress={() => navigation.goBack()}
+                onPress={() => {
+                    dispatch({
+                        type: user.id ? 'editUser' : 'addUser',
+                        payload: user
+                    })
+                    navigation.goBack()
+                }}
             />
         </View>
     )
